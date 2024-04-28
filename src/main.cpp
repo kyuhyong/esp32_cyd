@@ -18,7 +18,7 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
   ldr.begin();
-  display.begin();
+  display.begin(50);
   rgb.begin();
 }
 
