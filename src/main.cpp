@@ -1,17 +1,19 @@
 #include <Arduino.h>
-#include <SPI.h>
-#include <TFT_eSPI.h>
-#include "XPT2046_Touchscreen.h"
 #include "cyd_ldr.h"
 #include "cyd_display.h"
-#include "cyd_rgb.h"
+#include "RGB_LED.h"
+
+#define CYD_LED_BLUE    17
+#define CYD_LED_GREEN   16
+#define CYD_LED_RED     4
 
 LDR ldr;
 CYD_DISPLAY display;
-CYD_RGBLED rgb;
+RGB_LED rgb(CYD_LED_RED, CYD_LED_GREEN, CYD_LED_BLUE);
 
 uint32_t next_update_t = 100;
 uint8_t rgb_r = 0;
+uint8_t rgb_r_state = 0;
 // put function declarations here:
 
 void setup() {
@@ -19,14 +21,25 @@ void setup() {
   Serial.begin(115200);
   ldr.begin();
   display.begin(50);
-  rgb.begin();
+  //rgb.begin();
+  rgb.pLedR->off();
+  rgb.pLedG->off();
+  digitalWrite(CYD_LED_GREEN, LOW);
 }
 
 void loop() {
   display.loop();
   if(millis() > next_update_t) {
-    rgb.set(rgb_r, 0, 0);
-    if(rgb_r++ > 255) {
+    //rgb.set_rgb(rgb_r, 0, 0);
+    if(rgb_r++ > 49) {
+      rgb_r_state^=1;
+      if(rgb_r_state) {
+        rgb.pLedR->on();
+        rgb.pLedB->off();
+      } else {
+        rgb.pLedR->off();
+        rgb.pLedB->on();
+      }
       rgb_r = 0;
     }
     Serial.print("LDR:");
