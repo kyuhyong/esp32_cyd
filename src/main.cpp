@@ -2,6 +2,7 @@
 #include "cyd_ldr.h"
 #include "cyd_display.h"
 #include "RGB_LED.h"
+#include "I2C_INMP441.h"
 
 #define CYD_LED_BLUE    17
 #define CYD_LED_GREEN   16
@@ -10,6 +11,7 @@
 LDR ldr;
 CYD_DISPLAY display;
 RGB_LED rgb(CYD_LED_RED, CYD_LED_GREEN, CYD_LED_BLUE);
+INMP441 mic;
 
 uint32_t next_update_t = 100;
 uint8_t rgb_r = 0;
@@ -24,6 +26,7 @@ void setup() {
   //rgb.begin();
   rgb.pLedR->off();
   rgb.pLedG->off();
+  mic.init();
   digitalWrite(CYD_LED_GREEN, LOW);
 }
 
