@@ -14,11 +14,22 @@ uint32_t next_update_t = 100;
 uint8_t rgb_r = 0;
 // put function declarations here:
 
+void handle_touchEvent(int x, int y, int z) {
+  Serial.print("Touched:");
+  Serial.print(x);
+  Serial.print(",");
+  Serial.print(y);
+  Serial.print(",");
+  Serial.print(z);
+  Serial.println();
+}
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
   ldr.begin();
   display.begin(50);
+  display.onNewTouchEvent(handle_touchEvent);
   rgb.begin();
 }
 
@@ -29,9 +40,9 @@ void loop() {
     if(rgb_r++ > 255) {
       rgb_r = 0;
     }
-    Serial.print("LDR:");
-    Serial.print(ldr.get());
-    Serial.println();
+    // Serial.print("LDR:");
+    // Serial.print(ldr.get());
+    // Serial.println();
     next_update_t = millis()+10;
   }
 }

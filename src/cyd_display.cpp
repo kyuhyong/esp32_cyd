@@ -46,6 +46,9 @@ void CYD_DISPLAY::loop()
         x = map(p.x, 200, 3700, 1, SCREEN_WIDTH);
         y = map(p.y, 240, 3800, 1, SCREEN_HEIGHT);
         z = p.z;
+        if(this->_cbTouchEvent) {
+            this->_cbTouchEvent(x, y, z);
+        }
     }
 }
 
