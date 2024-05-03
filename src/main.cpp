@@ -33,9 +33,7 @@ void setup() {
   Serial.begin(115200);
   ldr.begin();
   display.begin(50);
-
   display.onNewTouchEvent(handle_touchEvent);
-  rgb.begin();
   rgb.pLedR->off();
   rgb.pLedG->off();
   mic.init();
