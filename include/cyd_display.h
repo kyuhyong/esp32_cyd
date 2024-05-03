@@ -23,17 +23,19 @@
 class CYD_DISPLAY
 {
 public:
+    typedef void (*cyd_TouchEvent)(int, int, int);
     CYD_DISPLAY() {};
     ~CYD_DISPLAY(){};
     void begin(uint16_t);
     void loop(void);
+    void onNewTouchEvent(cyd_TouchEvent event) { _cbTouchEvent = event; }
     TFT_eSPI tft = TFT_eSPI();
     TFT_eSprite disp = TFT_eSprite(&tft);
     SPIClass touchscreenSPI = SPIClass(VSPI);
     XPT2046_Touchscreen touchscreen = XPT2046_Touchscreen(XPT2046_CS, XPT2046_IRQ);
 private:
     void refresh(void);
-
+    cyd_TouchEvent _cbTouchEvent;
 };
 
 extern CYD_DISPLAY display;
