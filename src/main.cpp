@@ -33,6 +33,8 @@ void handle_touchEvent(int x, int y, int z) {
   Serial.print(",");
   Serial.print(z);
   Serial.println();
+  speedometer.set(config_speed.max - map(y, 0, 240, config_speed.min, config_speed.max));
+  speedometer.refresh();
 }
 
 void setup() {
@@ -43,19 +45,23 @@ void setup() {
   display.onNewTouchEvent(handle_touchEvent);
   config_speed.min =      0.0;
   config_speed.max =      200.0;
-  config_speed.width =    150;
-  config_speed.height =   150;
-  config_speed.pos_x =    50;
-  config_speed.pos_y =    50;
+  config_speed.width =    190;
+  config_speed.height =   190;
+  config_speed.pos_x =    10;
+  config_speed.pos_y =    10;
   config_speed.inner_r =  40;
-  config_speed.radius =   60;
+  config_speed.radius =   90;
   config_speed.angle_min = 30;
   config_speed.angle_max = 275;
-  config_speed.tick_minor = 5;
-  config_speed.tick_major = 10;
+  config_speed.tick_minor = 10;
+  config_speed.tick_major = 20;
   config_speed.font_size =  4;
-  config_speed.color_arc = TFT_WHITE;
-  config_speed.color_back = 0x0026;
+  config_speed.color_arc =        TFT_YELLOW;
+  config_speed.color_minor_tick = TFT_LIGHTGREY;
+  config_speed.color_major_tick = 0x055D;
+  config_speed.color_back =       0x0026;
+  config_speed.color_needle =     0xF811;
+  speedometer.set(50);
   speedometer.config(config_speed, display.Tft());
 
   rgb.pLedR->off();
@@ -91,9 +97,6 @@ void loop() {
   //   Serial.println();
   // }
   if(millis() > next_update_t) {
-    // Serial.print("LDR:");
-    // Serial.print(ldr.get());
-    // Serial.println();
     next_update_t = millis()+10;
   }
 }

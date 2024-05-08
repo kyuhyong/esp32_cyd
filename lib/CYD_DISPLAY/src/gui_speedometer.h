@@ -4,30 +4,28 @@
 #include <Arduino.h>
 #include <TFT_eSPI.h>
 
+
 class GUI_SPEEDOMETER{
 public:
-    typedef enum {
-        SPEEDOMETER_ARC_BAR = 0,
-        SPEEDOMETER_ARROW
-    }SPEEDOMETER_TYPE;
-
     typedef struct {
-        double min;
-        double max;
-        int     tick_minor;
-        int     tick_major;
-        int     width;
-        int     height;
-        int     pos_x;
-        int     pos_y;
-        int     radius;
-        int     inner_r;
-        int     angle_min;
-        int     angle_max;
+        double min;         // Minimum value
+        double max;         // Maximum value
+        int     tick_minor; // Minor tick value
+        int     tick_major; // Major tick value
+        int     width;      // Total Width of sprite
+        int     height;     // Total height of sprite
+        int     pos_x;      // X Position relative from top left
+        int     pos_y;      // Y position relative from top left
+        int     radius;     // Outer most radius (Should not exceed width/2 or height/2 whichever lower)
+        int     inner_r;    // Inner circle radius (should not exceed radius / 2)
+        int     angle_min;  // Angle for min value
+        int     angle_max;  // Angle for max value
         uint8_t     font_size;
-        uint16_t    color_back;
-        uint16_t    color_arc;
-        SPEEDOMETER_TYPE type;
+        uint16_t    color_back;         // Color for background
+        uint16_t    color_arc;          // Color for arc bar
+        uint16_t    color_minor_tick;   // Color for minor ticks
+        uint16_t    color_major_tick;   // Color for major ticks, edge of control
+        uint16_t    color_needle;       // Color for needle
     }Speedometer_Config;
     GUI_SPEEDOMETER(){};
     ~GUI_SPEEDOMETER(){};
@@ -43,7 +41,7 @@ private:
     double _value;
     int _tick_minor_num;
     int _tick_major_num;
-    int _tick_total;
+    int _d_total;
     void draw(void);
 };
 
