@@ -6,6 +6,11 @@
 class LED
 {
 public: 
+    typedef enum {
+        LED_STATE_NORMAL = 0,
+        LED_STATE_BLINK,
+        LED_STATE_STROBE,
+    }LED_STATE;
     LED(uint8_t pin);
     LED(uint8_t pin, bool pullup);
     ~LED(){};
@@ -13,9 +18,16 @@ public:
     void off();
     void pwm(uint8_t);
     void set(uint8_t);
+    void blink(uint16_t, uint16_t);
+    void update(void);
 private:
     bool    _isPullup;
+    bool    _isOn;
     uint8_t _pin;
+    LED_STATE _current_state;
+    uint16_t _on_ms;
+    uint16_t _off_ms;
+    uint32_t _next_ms;
 };
 
 class RGB_LED

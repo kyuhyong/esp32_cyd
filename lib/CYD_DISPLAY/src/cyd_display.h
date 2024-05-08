@@ -29,6 +29,7 @@ public:
     void begin(uint16_t);
     void loop(void);
     void onNewTouchEvent(cyd_TouchEvent event) { _cbTouchEvent = event; }
+    TFT_eSPI* Tft(){return &tft; };
     TFT_eSPI tft = TFT_eSPI();
     TFT_eSprite disp = TFT_eSprite(&tft);
     SPIClass touchscreenSPI = SPIClass(VSPI);

@@ -36,7 +36,7 @@ void CYD_DISPLAY::begin(uint16_t interval_ms)
 void CYD_DISPLAY::loop()
 {
     if(millis() > _next_update_ms) {
-        this->refresh();
+        //this->refresh();
         _next_update_ms = millis() + _update_interval_ms;
     }
     if (touchscreen.tirqTouched() && touchscreen.touched()) {
@@ -54,7 +54,7 @@ void CYD_DISPLAY::loop()
 
 // Print Touchscreen info about X, Y and Pressure (Z) on the TFT Display
 void CYD_DISPLAY::refresh(void) {
-    disp.createSprite(220, 220);
+    disp.createSprite(180, 200);
     disp.setSwapBytes(true);
     disp.setTextDatum(ML_DATUM);
     // Update disp
@@ -64,11 +64,7 @@ void CYD_DISPLAY::refresh(void) {
     int textX = 10;
     int textY = 10;
 
-    String tempText = "X = " + String(x);
-    disp.drawString(tempText, textX, textY, FONT_SIZE);
-
-    textY += 15;
-    tempText = "Y = " + String(y);
+    String tempText = "X= " + String(x) + "Y= " + String(y);
     disp.drawString(tempText, textX, textY, FONT_SIZE);
 
     textY += 15;
