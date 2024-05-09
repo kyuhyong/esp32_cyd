@@ -7,10 +7,10 @@ void GUI_SPEEDOMETER::config(Speedometer_Config config, TFT_eSPI* tft) {
     _d_total = (int)(_config.max - _config.min);
     _tick_minor_num = _d_total / _config.tick_minor;
     _tick_major_num = _d_total / _config.tick_major;
-    this->draw();
+    this->draw(0.0);
 }
 
-void GUI_SPEEDOMETER::draw(void) {
+void GUI_SPEEDOMETER::draw(double value) {
     _disp.createSprite(_config.width, _config.height);
     _disp.setSwapBytes(true);
     _disp.setTextDatum(MC_DATUM);
@@ -48,7 +48,7 @@ void GUI_SPEEDOMETER::draw(void) {
     }
     // Draw needle and bar
     // First convert value to angle
-    int arc_deg = map(_value, _config.min, _config.max, _config.angle_min, _config.angle_max);
+    int arc_deg = map(value, _config.min, _config.max, _config.angle_min, _config.angle_max);
     // Draw bar
     _disp.drawSmoothArc(arc_x , arc_y, _config.radius - 35, _config.inner_r, 
                     _config.angle_min, arc_deg, _config.color_arc, _config.color_back);
@@ -68,7 +68,21 @@ void GUI_SPEEDOMETER::draw(void) {
     _disp.pushSprite(_config.pos_x, _config.pos_y);
     _disp.deleteSprite();
 }
-
+/// @brief Redraw UI directly with value
 void GUI_SPEEDOMETER::refresh() {
-    this->draw();
+    this->draw(_value);
+}
+/// @brief Update UI for PID effect
+void GUI_SPEEDOMETER::loop() {
+    if(millis() > _next_millis) {
+        _next_millis = millis() + LOOP_TIME_MS;
+        double error = _value - _value_last;
+        _error_i += error * PID_KI;
+        _value_last = error * PID_KP + (error - _error_prev) * PID_KD + _error_i;
+        _error_prev = error;
+        if(_value_last > _config.max) { _value_last = _config.max; }
+        else if(_value_last < _config.min) { _value_last = _config.min; }
+        this->draw(_value_last);
+    }
+    
 }

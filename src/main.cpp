@@ -34,7 +34,7 @@ void handle_touchEvent(int x, int y, int z) {
   Serial.print(z);
   Serial.println();
   speedometer.set(config_speed.max - map(y, 0, 240, config_speed.min, config_speed.max));
-  speedometer.refresh();
+  //speedometer.refresh();
 }
 
 void setup() {
@@ -78,6 +78,7 @@ void setup() {
 void loop() {
   display.loop();
   rgb.update();
+  speedometer.loop();
   // size_t bytes_read = 0;
   // i2s_read(I2S_NUM_0, mic_samples, sizeof(int32_t) * DMA_BUFFER_SIZE, &bytes_read, portMAX_DELAY);
   // int samples_read = bytes_read / sizeof(int32_t);

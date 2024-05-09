@@ -4,6 +4,10 @@
 #include <Arduino.h>
 #include <TFT_eSPI.h>
 
+#define PID_KP          0.35
+#define PID_KD          0.02
+#define PID_KI          0.25
+#define LOOP_TIME_MS    30
 
 class GUI_SPEEDOMETER{
 public:
@@ -31,8 +35,10 @@ public:
     ~GUI_SPEEDOMETER(){};
 
     void config(Speedometer_Config config, TFT_eSPI* tft);
+    /// @brief Set value
     void set(double value){ _value = value; };
     void refresh();
+    void loop();
 
 private:
     TFT_eSPI* _tft;
@@ -42,7 +48,11 @@ private:
     int _tick_minor_num;
     int _tick_major_num;
     int _d_total;
-    void draw(void);
+    double _value_last;     // For loop control
+    double _error_i;        // Error accumulation
+    double _error_prev;     // For derivative error
+    uint32_t _next_millis;
+    void draw(double);
 };
 
 #endif
