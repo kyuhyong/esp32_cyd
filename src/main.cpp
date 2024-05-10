@@ -4,6 +4,7 @@
 #include "RGB_LED.h"
 #include "I2C_INMP441.h"
 #include "gui_speedometer.h"
+#include "gui_bar.h"
 
 #define CYD_LED_BLUE    17
 #define CYD_LED_GREEN   16
@@ -13,10 +14,18 @@
 #define I2S_SD_PIN    33
 #define I2S_SCK_PIN   36
 
+#define COLOR_BACK        0x0026        //Dark blue
+#define COLOR_MAJOR_TICK  0x055D        //Light Blue
+#define COLOR_MINOR_TICK  TFT_LIGHTGREY
+#define COLOR_NEEDLE      0xF811        //Red
+
 LDR ldr;
 CYD_DISPLAY display;
 GUI_SPEEDOMETER speedometer;
 GUI_SPEEDOMETER::Speedometer_Config config_speed;
+GUI_BAR bar1;
+GUI_BAR::Bar_Config config_bar1;
+
 RGB_LED rgb(CYD_LED_RED, CYD_LED_GREEN, CYD_LED_BLUE);
 //INMP441 mic(I2S_WS_PIN, I2S_SD_PIN, I2S_SCK_PIN, -1);
 INMP441 mic;
@@ -34,6 +43,8 @@ void handle_touchEvent(int x, int y, int z) {
   Serial.print(z);
   Serial.println();
   speedometer.set(config_speed.max - map(y, 0, 240, config_speed.min, config_speed.max));
+  bar1.set(config_bar1.max - map(y, 0, 240, config_bar1.min, config_bar1.max));
+  bar1.refresh();
   //speedometer.refresh();
 }
 
@@ -57,12 +68,31 @@ void setup() {
   config_speed.tick_major = 20;
   config_speed.font_size =  4;
   config_speed.color_arc =        TFT_YELLOW;
-  config_speed.color_minor_tick = TFT_LIGHTGREY;
-  config_speed.color_major_tick = 0x055D;
-  config_speed.color_back =       0x0026;
+  config_speed.color_minor_tick = COLOR_MINOR_TICK;
+  config_speed.color_major_tick = COLOR_MAJOR_TICK;
+  config_speed.color_back =       COLOR_BACK;
   config_speed.color_needle =     0xF811;
   speedometer.set(50);
   speedometer.config(config_speed, display.Tft());
+
+  config_bar1.min = 0.0;
+  config_bar1.max = 100.0;
+  config_bar1.width = 40;
+  config_bar1.height = 150;
+  config_bar1.pos_x = 210;
+  config_bar1.pos_y = 40;
+  config_bar1.tick_minor = 5;
+  config_bar1.tick_major = 25;
+  config_bar1.color_major_tick = COLOR_MAJOR_TICK;
+  config_bar1.color_minor_tick = COLOR_MINOR_TICK;
+  config_bar1.color_edge = TFT_LIGHTGREY;
+  config_bar1.color_text = TFT_WHITE;
+  config_bar1.color_bar = TFT_CYAN;
+  config_bar1.color_back = COLOR_BACK;
+  config_bar1.font_size = 2;
+  bar1.set(50);
+  bar1.config(config_bar1, display.Tft());
+  bar1.refresh();
 
   rgb.pLedR->off();
   rgb.pLedG->off();
