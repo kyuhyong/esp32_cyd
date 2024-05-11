@@ -61,9 +61,12 @@ void GUI_SPEEDOMETER::draw(double value) {
         _config.angle_min, _config.angle_max, _config.color_major_tick, _config.color_back);
     _disp.fillSmoothCircle(arc_x, arc_y, _config.inner_r, _config.color_back);
     
+    // Draw value
     String tempText = String((int)_value);
     _disp.drawString(tempText, 
         arc_x, arc_y, _config.font_size);
+    // Draw unit
+    _disp.drawString(_s_unit, arc_x, arc_y + 18, 2);
 
     _disp.pushSprite(_config.pos_x, _config.pos_y);
     _disp.deleteSprite();

@@ -78,6 +78,7 @@ void setup() {
   config_speed.color_needle =     0xF811;
   speedometer.set(50);
   speedometer.config(config_speed, display.Tft());
+  speedometer.unit("Km/h");
 
   config_bar1.type = GUI_BAR::BAR_TYPE_V;
   config_bar1.min = 0.0;
@@ -85,7 +86,7 @@ void setup() {
   config_bar1.width = 40;
   config_bar1.height = 150;
   config_bar1.pos_x = 210;
-  config_bar1.pos_y = 40;
+  config_bar1.pos_y = 20;
   config_bar1.tick_minor = 5;
   config_bar1.tick_major = 25;
   config_bar1.color_major_tick = COLOR_MAJOR_TICK;
@@ -103,7 +104,7 @@ void setup() {
   config_bar2.min = 0.0;
   config_bar2.max = 100.0;
   config_bar2.width = 150;
-  config_bar2.height = 40;
+  config_bar2.height = 35;
   config_bar2.pos_x = 10;
   config_bar2.pos_y = 195;
   config_bar2.tick_minor = 5;

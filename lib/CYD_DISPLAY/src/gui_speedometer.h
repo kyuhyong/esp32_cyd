@@ -37,6 +37,7 @@ public:
     void config(Speedometer_Config config, TFT_eSPI* tft);
     /// @brief Set value
     void set(double value){ _value = value; };
+    void unit(String unit){ _s_unit = unit; };
     void refresh();
     void loop();
 
@@ -52,6 +53,7 @@ private:
     double _error_i;        // Error accumulation
     double _error_prev;     // For derivative error
     uint32_t _next_millis;
+    String  _s_unit;
     void draw(double);
 };
 
