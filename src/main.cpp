@@ -25,6 +25,8 @@ GUI_SPEEDOMETER speedometer;
 GUI_SPEEDOMETER::Speedometer_Config config_speed;
 GUI_BAR bar1;
 GUI_BAR::Bar_Config config_bar1;
+GUI_BAR bar2;
+GUI_BAR::Bar_Config config_bar2;
 
 RGB_LED rgb(CYD_LED_RED, CYD_LED_GREEN, CYD_LED_BLUE);
 //INMP441 mic(I2S_WS_PIN, I2S_SD_PIN, I2S_SCK_PIN, -1);
@@ -45,6 +47,8 @@ void handle_touchEvent(int x, int y, int z) {
   speedometer.set(config_speed.max - map(y, 0, 240, config_speed.min, config_speed.max));
   bar1.set(config_bar1.max - map(y, 0, 240, config_bar1.min, config_bar1.max));
   bar1.refresh();
+  bar2.set(map(x, 0, 320, config_bar2.min, config_bar2.max));
+  bar2.refresh();
   //speedometer.refresh();
 }
 
@@ -58,8 +62,8 @@ void setup() {
   config_speed.max =      200.0;
   config_speed.width =    190;
   config_speed.height =   190;
-  config_speed.pos_x =    10;
-  config_speed.pos_y =    10;
+  config_speed.pos_x =    0;
+  config_speed.pos_y =    0;
   config_speed.inner_r =  40;
   config_speed.radius =   90;
   config_speed.angle_min = 30;
@@ -75,6 +79,7 @@ void setup() {
   speedometer.set(50);
   speedometer.config(config_speed, display.Tft());
 
+  config_bar1.type = GUI_BAR::BAR_TYPE_V;
   config_bar1.min = 0.0;
   config_bar1.max = 100.0;
   config_bar1.width = 40;
@@ -93,6 +98,28 @@ void setup() {
   bar1.set(50);
   bar1.config(config_bar1, display.Tft());
   bar1.refresh();
+
+  config_bar2.type = GUI_BAR::BAR_TYPE_H;
+  config_bar2.min = 0.0;
+  config_bar2.max = 100.0;
+  config_bar2.width = 150;
+  config_bar2.height = 40;
+  config_bar2.pos_x = 10;
+  config_bar2.pos_y = 195;
+  config_bar2.tick_minor = 5;
+  config_bar2.tick_major = 25;
+  config_bar2.color_major_tick = COLOR_MAJOR_TICK;
+  config_bar2.color_minor_tick = COLOR_MINOR_TICK;
+  config_bar2.color_edge = TFT_LIGHTGREY;
+  config_bar2.color_text = TFT_WHITE;
+  config_bar2.color_bar = TFT_PURPLE;
+  config_bar2.color_back = COLOR_BACK;
+  config_bar2.font_size = 2;
+  bar2.set(50);
+  bar2.config(config_bar2, display.Tft());
+  bar2.refresh();
+
+  
 
   rgb.pLedR->off();
   rgb.pLedG->off();

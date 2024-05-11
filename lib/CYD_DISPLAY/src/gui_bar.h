@@ -46,11 +46,13 @@ private:
     int _tick_major_num;
     int _d_total;
     int _l_tick;
-    int _m_x;
+    int _m_x_left;      //Left margin
+    int _m_x_right;     //Right margin
     int _m_y;
     float _t_tick;
-    static constexpr float MARGIN_X = 0.05;     //5%
-    static constexpr float MARGIN_Y = 0.05;
+    static constexpr float MARGIN_X_L = 0.6;    //60% margin L
+    static constexpr float MARGIN_X_R = 0.05;   //5% margin R
+    static constexpr float MARGIN_Y = 0.05;     //Top margin
     static constexpr float LENGTH_TICK = 0.1f;
     static constexpr float THICKNESS_TICK = 0.01f;
     void draw(double);
