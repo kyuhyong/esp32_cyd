@@ -6,6 +6,7 @@
 #include "gui_speedometer.h"
 #include "gui_bar.h"
 #include "gui_textbox.h"
+#include "gui_slider.h"
 
 #define CYD_LED_BLUE    17
 #define CYD_LED_GREEN   16
@@ -30,6 +31,8 @@ GUI_BAR bar2;
 GUI_BAR::Config config_bar2;
 GUI_TEXTBOX tb1;
 GUI_TEXTBOX::Config config_tb1;
+GUI_SLIDER slider1;
+GUI_SLIDER::Config config_slider1;
 
 RGB_LED rgb(CYD_LED_RED, CYD_LED_GREEN, CYD_LED_BLUE);
 //INMP441 mic(I2S_WS_PIN, I2S_SD_PIN, I2S_SCK_PIN, -1);
@@ -52,7 +55,15 @@ void handle_touchEvent(int x, int y, int z) {
   bar1.refresh();
   bar2.set(map(x, 0, 320, config_bar2.min, config_bar2.max));
   bar2.refresh();
+  slider1.touch(x, y);
+  //slider1.set(config_slider1.max - map(y, 0, 240, config_slider1.min, config_slider1.max));
+  //slider1.refresh();
   //speedometer.refresh();
+}
+
+void handle_sliderEvent(int val) {
+  Serial.print("Slider:");
+  Serial.println(val);
 }
 
 void setup() {
@@ -105,6 +116,29 @@ void setup() {
   bar1.config(config_bar1, display.Tft());
   bar1.refresh();
 
+  config_slider1.type = GUI_SLIDER::TYPE_V;
+  config_slider1.min = 0.0;
+  config_slider1.max = 100.0;
+  config_slider1.width = 40;
+  config_slider1.height = 150;
+  config_slider1.slider_r = 10;
+  config_slider1.pos_x = 200;
+  config_slider1.pos_y = 0;
+  config_slider1.tick_minor = 5;
+  config_slider1.tick_major = 25;
+  config_slider1.font = 2;
+  config_slider1.color_major_tick = COLOR_MAJOR_TICK;
+  config_slider1.color_minor_tick = COLOR_MINOR_TICK;
+  config_slider1.color_edge = TFT_LIGHTGREY;
+  config_slider1.color_bar = TFT_LIGHTGREY;
+  config_slider1.color_slider = TFT_YELLOW;
+  config_slider1.color_back = COLOR_BACK;
+  config_slider1.color_text = TFT_WHITE;
+  slider1.set(50);
+  slider1.config(config_slider1, display.Tft());
+  slider1.onNewSliderEvent(handle_sliderEvent);
+  slider1.refresh();
+
   config_bar2.type = GUI_BAR::BAR_TYPE_H;
   config_bar2.min = 0.0;
   config_bar2.max = 100.0;
@@ -138,6 +172,8 @@ void setup() {
   tb1.config(config_tb1, display.Tft());
   tb1.setText("1234");
   tb1.refresh();
+
+  
 
   rgb.pLedR->off();
   rgb.pLedG->off();
