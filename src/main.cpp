@@ -5,6 +5,7 @@
 #include "I2C_INMP441.h"
 #include "gui_speedometer.h"
 #include "gui_bar.h"
+#include "gui_textbox.h"
 
 #define CYD_LED_BLUE    17
 #define CYD_LED_GREEN   16
@@ -27,6 +28,8 @@ GUI_BAR bar1;
 GUI_BAR::Bar_Config config_bar1;
 GUI_BAR bar2;
 GUI_BAR::Bar_Config config_bar2;
+GUI_TEXTBOX tb1;
+GUI_TEXTBOX::Config config_tb1;
 
 RGB_LED rgb(CYD_LED_RED, CYD_LED_GREEN, CYD_LED_BLUE);
 //INMP441 mic(I2S_WS_PIN, I2S_SD_PIN, I2S_SCK_PIN, -1);
@@ -60,17 +63,17 @@ void setup() {
   display.onNewTouchEvent(handle_touchEvent);
   config_speed.min =      0.0;
   config_speed.max =      200.0;
-  config_speed.width =    190;
-  config_speed.height =   190;
+  config_speed.width =    150;
+  config_speed.height =   150;
   config_speed.pos_x =    0;
   config_speed.pos_y =    0;
-  config_speed.inner_r =  40;
-  config_speed.radius =   90;
+  config_speed.inner_r =  28;
+  config_speed.radius =   70;
   config_speed.angle_min = 30;
   config_speed.angle_max = 275;
   config_speed.tick_minor = 10;
   config_speed.tick_major = 20;
-  config_speed.font_size =  4;
+  config_speed.font_size =  2;
   config_speed.color_arc =        TFT_YELLOW;
   config_speed.color_minor_tick = COLOR_MINOR_TICK;
   config_speed.color_major_tick = COLOR_MAJOR_TICK;
@@ -85,8 +88,8 @@ void setup() {
   config_bar1.max = 100.0;
   config_bar1.width = 40;
   config_bar1.height = 150;
-  config_bar1.pos_x = 210;
-  config_bar1.pos_y = 20;
+  config_bar1.pos_x = 155;
+  config_bar1.pos_y = 0;
   config_bar1.tick_minor = 5;
   config_bar1.tick_major = 25;
   config_bar1.color_major_tick = COLOR_MAJOR_TICK;
@@ -105,8 +108,8 @@ void setup() {
   config_bar2.max = 100.0;
   config_bar2.width = 150;
   config_bar2.height = 35;
-  config_bar2.pos_x = 10;
-  config_bar2.pos_y = 195;
+  config_bar2.pos_x = 0;
+  config_bar2.pos_y = 160;
   config_bar2.tick_minor = 5;
   config_bar2.tick_major = 25;
   config_bar2.color_major_tick = COLOR_MAJOR_TICK;
@@ -120,7 +123,19 @@ void setup() {
   bar2.config(config_bar2, display.Tft());
   bar2.refresh();
 
-  
+  config_tb1.width = 160;
+  config_tb1.height = 65;
+  config_tb1.pos_x = 155;
+  config_tb1.pos_y = 155;
+  config_tb1.color_back = COLOR_BACK;
+  config_tb1.color_edge = TFT_WHITE;
+  config_tb1.color_box =  TFT_DARKGREEN;
+  config_tb1.color_text = TFT_GREEN;
+  config_tb1.datum = ML_DATUM;
+  config_tb1.font = 7;    //Digit
+  tb1.config(config_tb1, display.Tft());
+  tb1.setText("1234");
+  tb1.refresh();
 
   rgb.pLedR->off();
   rgb.pLedG->off();
@@ -156,7 +171,10 @@ void loop() {
   //   Serial.println();
   // }
   if(millis() > next_update_t) {
-    next_update_t = millis()+10;
+    int num = millis()%10000;
+    tb1.setText(String(num));
+    tb1.refresh();
+    next_update_t = millis()+50;
   }
 }
 
