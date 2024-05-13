@@ -23,11 +23,11 @@
 LDR ldr;
 CYD_DISPLAY display;
 GUI_SPEEDOMETER speedometer;
-GUI_SPEEDOMETER::Speedometer_Config config_speed;
+GUI_SPEEDOMETER::Config config_speed;
 GUI_BAR bar1;
-GUI_BAR::Bar_Config config_bar1;
+GUI_BAR::Config config_bar1;
 GUI_BAR bar2;
-GUI_BAR::Bar_Config config_bar2;
+GUI_BAR::Config config_bar2;
 GUI_TEXTBOX tb1;
 GUI_TEXTBOX::Config config_tb1;
 
@@ -67,13 +67,15 @@ void setup() {
   config_speed.height =   150;
   config_speed.pos_x =    0;
   config_speed.pos_y =    0;
-  config_speed.inner_r =  28;
+  config_speed.inner_r =  15;
   config_speed.radius =   70;
   config_speed.angle_min = 30;
   config_speed.angle_max = 275;
   config_speed.tick_minor = 10;
   config_speed.tick_major = 20;
   config_speed.font_size =  2;
+  config_speed.txt_x = 100;
+  config_speed.txt_y = 100;
   config_speed.color_arc =        TFT_YELLOW;
   config_speed.color_minor_tick = COLOR_MINOR_TICK;
   config_speed.color_major_tick = COLOR_MAJOR_TICK;

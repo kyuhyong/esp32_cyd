@@ -1,6 +1,6 @@
 #include "gui_speedometer.h"
 
-void GUI_SPEEDOMETER::config(Speedometer_Config config, TFT_eSPI* tft) {
+void GUI_SPEEDOMETER::config(GUI_SPEEDOMETER::Config config, TFT_eSPI* tft) {
     this->_config = config;
     this->_tft = tft;
     this->_disp = TFT_eSprite(tft);
@@ -64,9 +64,9 @@ void GUI_SPEEDOMETER::draw(double value) {
     // Draw value
     String tempText = String((int)_value);
     _disp.drawString(tempText, 
-        arc_x, arc_y, _config.font_size);
+        _config.txt_x, _config.txt_y, _config.font_size);
     // Draw unit
-    _disp.drawString(_s_unit, arc_x, arc_y + 18, 2);
+    _disp.drawString(_s_unit, _config.txt_x, _config.txt_y + 18, 2);
 
     _disp.pushSprite(_config.pos_x, _config.pos_y);
     _disp.deleteSprite();
@@ -81,6 +81,8 @@ void GUI_SPEEDOMETER::loop() {
         _next_millis = millis() + LOOP_TIME_MS;
         double error = _value - _value_last;
         _error_i += error * PID_KI;
+        if(_error_i > ERROR_I_MAX) _error_i = ERROR_I_MAX;
+        else if(_error_i < -ERROR_I_MAX) _error_i = - ERROR_I_MAX;
         _value_last = error * PID_KP + (error - _error_prev) * PID_KD + _error_i;
         _error_prev = error;
         if(_value_last > _config.max) { _value_last = _config.max; }

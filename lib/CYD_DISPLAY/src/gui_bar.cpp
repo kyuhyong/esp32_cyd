@@ -1,6 +1,6 @@
 #include "gui_bar.h"
 
-void GUI_BAR::config(Bar_Config config, TFT_eSPI* tft) {
+void GUI_BAR::config(GUI_BAR::Config config, TFT_eSPI* tft) {
     this->_config = config;
     this->_tft = tft;
     this->_disp = TFT_eSprite(tft);
@@ -39,10 +39,6 @@ void GUI_BAR::draw(double value) {
     txtSp.createSprite(_config.width, _config.height);
     txtSp.fillSprite(TFT_TRANSPARENT);
     txtSp.setTextColor(_config.color_text, TFT_TRANSPARENT, true);
-    
-    _disp.setSwapBytes(true);
-    
-
     _disp.fillSprite(_config.color_back);
     _disp.setTextColor(_config.color_text, TFT_TRANSPARENT, true);
     switch (_config.type)
@@ -85,6 +81,7 @@ void GUI_BAR::draw(double value) {
                 txtSp.drawString(txt, tx, ty, 2);
             }
         }
+        _disp.setSwapBytes(false);      //Fix color endian
         txtSp.pushToSprite(&_disp, 0, 0, TFT_TRANSPARENT);
         String txt = String((int)_value);
         _disp.drawString(txt, _config.width/2 , _config.height - _m_y/2, 2);  
@@ -128,6 +125,7 @@ void GUI_BAR::draw(double value) {
                 txtSp.drawString(txt, tx, ty, 2);
             }
         }
+        _disp.setSwapBytes(false);      //Fix color endian
         txtSp.pushToSprite(&_disp, 0, 0, TFT_TRANSPARENT);
         String txt = String((int)_value);
         _disp.drawString(txt, _config.width/2 , _config.height - _m_y/2, 2);  
@@ -136,7 +134,7 @@ void GUI_BAR::draw(double value) {
     default:
         break;
     }
-     
+    _disp.setSwapBytes(true);
     _disp.pushSprite(_config.pos_x, _config.pos_y);
     _disp.deleteSprite();
 }

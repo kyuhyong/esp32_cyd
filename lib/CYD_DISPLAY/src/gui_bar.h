@@ -28,11 +28,11 @@ public:
         uint16_t    color_major_tick;   // Color for major ticks, edge of control
         uint16_t    color_text;         // Color for any text
         uint16_t    color_edge;         // Color for edge
-    }Bar_Config;
+    }Config;
     GUI_BAR(){};
     ~GUI_BAR(){};
 
-    void config(Bar_Config config, TFT_eSPI* tft);
+    void config(GUI_BAR::Config config, TFT_eSPI* tft);
     /// @brief Set value
     void set(double value){ _value = value; };
     void refresh();
@@ -40,7 +40,7 @@ public:
 private:
     TFT_eSPI* _tft;
     TFT_eSprite _disp = TFT_eSprite(_tft);
-    Bar_Config _config;
+    GUI_BAR::Config _config;
     double _value;
     int _tick_minor_num;
     int _tick_major_num;
