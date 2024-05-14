@@ -7,6 +7,7 @@
 #include "gui_bar.h"
 #include "gui_textbox.h"
 #include "gui_slider.h"
+#include "gui_button.h"
 
 #define CYD_LED_BLUE    17
 #define CYD_LED_GREEN   16
@@ -33,6 +34,8 @@ GUI_TEXTBOX tb1;
 GUI_TEXTBOX::Config config_tb1;
 GUI_SLIDER slider1;
 GUI_SLIDER::Config config_slider1;
+GUI_BUTTON button1;
+GUI_BUTTON::Config config_button1;
 
 RGB_LED rgb(CYD_LED_RED, CYD_LED_GREEN, CYD_LED_BLUE);
 //INMP441 mic(I2S_WS_PIN, I2S_SD_PIN, I2S_SCK_PIN, -1);
@@ -56,6 +59,7 @@ void handle_touchEvent(int x, int y, int z) {
   bar2.set(map(x, 0, 320, config_bar2.min, config_bar2.max));
   bar2.refresh();
   slider1.touch(x, y);
+  button1.touch(x, y);
   //slider1.set(config_slider1.max - map(y, 0, 240, config_slider1.min, config_slider1.max));
   //slider1.refresh();
   //speedometer.refresh();
@@ -64,6 +68,11 @@ void handle_touchEvent(int x, int y, int z) {
 void handle_sliderEvent(int val) {
   Serial.print("Slider:");
   Serial.println(val);
+}
+
+void handle_button1Event(GUI_BUTTON::TOGGLE_STATE state) {
+  Serial.print("Button1 : ");
+  Serial.println(state);
 }
 
 void setup() {
@@ -138,6 +147,21 @@ void setup() {
   slider1.config(config_slider1, display.Tft());
   slider1.onNewSliderEvent(handle_sliderEvent);
   slider1.refresh();
+
+  config_button1.pos_x = 245;
+  config_button1.pos_y = 5;
+  config_button1.width = 70;
+  config_button1.height = 40;
+  config_button1.font = 2;
+  config_button1.color_back = COLOR_BACK;
+  config_button1.color_button_pressed = TFT_ORANGE;
+  config_button1.color_button_release = TFT_DARKGREY;
+  config_button1.color_edge = TFT_BLUE;
+  config_button1.color_text = TFT_BLACK;
+  button1.config(config_button1, display.Tft());
+  button1.set_label("LIGHT");
+  button1.onNewButtonEvent(handle_button1Event);
+  button1.refresh();
 
   config_bar2.type = GUI_BAR::BAR_TYPE_H;
   config_bar2.min = 0.0;
